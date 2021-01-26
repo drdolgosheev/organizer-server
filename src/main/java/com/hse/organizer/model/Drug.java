@@ -56,4 +56,95 @@ public class Drug extends BaseEntity{
     @ManyToMany(mappedBy = "drugList", fetch = FetchType.LAZY)
     private List<Diagnosis> diagnosisList;
 
+    public Drug() {}
+
+    public Drug(String name, String description, Date prodDate, Integer numOfPills, Integer takePillsInterval) {
+        this.name = name;
+        this.description = description;
+        this.prodDate = prodDate;
+        this.numOfPills = numOfPills;
+        this.takePillsInterval = takePillsInterval;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getProdDate() {
+        return prodDate;
+    }
+
+    public void setProdDate(Date prodDate) {
+        this.prodDate = prodDate;
+    }
+
+    public Date getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(Date expDate) {
+        this.expDate = expDate;
+    }
+
+    public Integer getNumOfPills() {
+        return numOfPills;
+    }
+
+    public void setNumOfPills(Integer numOfPills) {
+        this.numOfPills = numOfPills;
+    }
+
+    public Integer getNumOfPillsPerDay() {
+        return numOfPillsPerDay;
+    }
+
+    public void setNumOfPillsPerDay(Integer numOfPillsPerDay) {
+        this.numOfPillsPerDay = numOfPillsPerDay;
+    }
+
+    public Date getStartTakePillsTime() {
+        return startTakePillsTime;
+    }
+
+    public void setStartTakePillsTime(Date startTakePillsTime) {
+        this.startTakePillsTime = startTakePillsTime;
+    }
+
+    public Integer getTakePillsInterval() {
+        return takePillsInterval;
+    }
+
+    public void setTakePillsInterval(Integer takePillsInterval) {
+        this.takePillsInterval = takePillsInterval;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<Diagnosis> getDiagnosisList() {
+        return diagnosisList;
+    }
+
+    public void setDiagnosisList(List<Diagnosis> diagnosisList) {
+        this.diagnosisList = diagnosisList;
+    }
+
+
 }
