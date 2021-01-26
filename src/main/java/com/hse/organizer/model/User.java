@@ -1,6 +1,8 @@
 package com.hse.organizer.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,26 +41,18 @@ public class User extends BaseEntity{
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "user_drugs",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "drug_id", referencedColumnName = "id")})
     private List<Drug> medKit;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "user_diagnosis",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "diagnosis_id", referencedColumnName = "id")})
     private List<Diagnosis> diagnosisList;
-
-    public User(){}
-
-    public User(String name, String firstName, String lastName, String email, String password) {
-        this.name = name;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
 
     public String getName() {
         return name;

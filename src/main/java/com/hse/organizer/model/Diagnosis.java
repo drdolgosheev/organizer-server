@@ -1,6 +1,8 @@
 package com.hse.organizer.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,6 +26,7 @@ public class Diagnosis extends BaseEntity{
     String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "diagnosis_drugs",
             joinColumns = {@JoinColumn(name = "diagnosis_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "drug_id", referencedColumnName = "id")})
