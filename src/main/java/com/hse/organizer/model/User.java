@@ -44,6 +44,12 @@ public class User extends BaseEntity{
             inverseJoinColumns = {@JoinColumn(name = "drug_id", referencedColumnName = "id")})
     private List<Drug> medKit;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_diagnosis",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "diagnosis_id", referencedColumnName = "id")})
+    private List<Diagnosis> diagnosisList;
+
     public User(){}
 
     public User(String name, String firstName, String lastName, String email, String password) {

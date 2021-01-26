@@ -32,6 +32,9 @@ public class Diagnosis extends BaseEntity{
     @ManyToMany(mappedBy = "diagnosisList", fetch = FetchType.LAZY)
     private List<Doctor> doctorList;
 
+    @ManyToMany(mappedBy = "diagnosisList", fetch = FetchType.LAZY)
+    private List<User> userList;
+
     public Diagnosis(){}
 
     public Diagnosis(String name, String description) {
