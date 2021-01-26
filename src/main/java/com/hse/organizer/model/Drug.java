@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Simple domain object that represents application user.
+ * Simple domain object that represents application drug.
  *
  * @author Dolgosheev Dmitriy
  * @version 1.0
@@ -25,31 +25,35 @@ import java.util.List;
 @Data
 public class Drug extends BaseEntity{
 
-    @Column(name = "drugName")
+    @Column(name = "drugname")
     String name;
 
-    @Column(name = "drugDescription")
+    @Column(name = "drug_description")
     String description;
 
-    @Column(name = "drugProdDate")
+    @Column(name = "drug_prod_date")
     Date prodDate;
 
-    @Column(name = "drugExpDate")
+    @Column(name = "drug_exp_date")
     Date expDate;
 
-    @Column(name = "numOfPills")
+    @Column(name = "num_of_pills")
     Integer numOfPills;
 
-    @Column(name = "numOfPillsPerDay")
+    @Column(name = "num_of_pills_per_day")
     Integer numOfPillsPerDay;
 
-    @Column(name = "startTakePillsTime")
+    @Column(name = "start_take_pills_time")
     Date startTakePillsTime;
 
     // Number must take every day
-    @Column(name = "takePillsInterval")
+    @Column(name = "take_pills_interval")
     Integer takePillsInterval;
 
     @ManyToMany(mappedBy = "medKit", fetch = FetchType.LAZY)
     private List<User> users;
+
+    @ManyToMany(mappedBy = "drugList", fetch = FetchType.LAZY)
+    private List<Diagnosis> diagnosisList;
+
 }
