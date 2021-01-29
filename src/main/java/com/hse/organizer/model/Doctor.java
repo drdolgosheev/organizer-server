@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "doctors")
 @Data
-public class Doctor extends BaseEntity{
+public class Doctor extends BaseEntity {
 
     @Column(name = "doctor_name")
     String name;
@@ -41,7 +41,8 @@ public class Doctor extends BaseEntity{
             inverseJoinColumns = {@JoinColumn(name = "diagnosis_id", referencedColumnName = "id")})
     private List<Diagnosis> diagnosisList;
 
-    public Doctor(){}
+    public Doctor() {
+    }
 
     public Doctor(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -98,4 +99,16 @@ public class Doctor extends BaseEntity{
         this.diagnosisList = diagnosisList;
     }
 
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "'id=' " + this.getId() + '\'' +
+                "name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", diagnosisList=" + diagnosisList +
+                '}';
+    }
 }

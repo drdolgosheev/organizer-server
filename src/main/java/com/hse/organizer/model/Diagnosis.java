@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "diagnosis")
 @Data
-public class Diagnosis extends BaseEntity{
+public class Diagnosis extends BaseEntity {
 
     @Column(name = "diagnosis_name")
     String name;
@@ -38,7 +38,8 @@ public class Diagnosis extends BaseEntity{
     @ManyToMany(mappedBy = "diagnosisList", fetch = FetchType.LAZY)
     private List<User> userList;
 
-    public Diagnosis(){}
+    public Diagnosis() {
+    }
 
     public Diagnosis(String name, String description) {
         this.name = name;
@@ -75,5 +76,17 @@ public class Diagnosis extends BaseEntity{
 
     public void setDoctorList(List<Doctor> doctorList) {
         this.doctorList = doctorList;
+    }
+
+    @Override
+    public String toString() {
+        return "Diagnosis{" +
+                "'id=' " + this.getId() + '\'' +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", drugList=" + drugList +
+                ", doctorList=" + doctorList +
+                ", userList=" + userList +
+                '}';
     }
 }

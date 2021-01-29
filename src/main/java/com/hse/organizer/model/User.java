@@ -23,7 +23,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Column(name = "username")
     String name;
@@ -53,6 +53,17 @@ public class User extends BaseEntity{
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "diagnosis_id", referencedColumnName = "id")})
     private List<Diagnosis> diagnosisList;
+
+    public User() {
+    }
+
+    public User(String name, String firstName, String lastName, String email, String password) {
+        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 
     public String getName() {
         return name;
@@ -100,5 +111,19 @@ public class User extends BaseEntity{
 
     public void setMedKit(List<Drug> medKit) {
         this.medKit = medKit;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "'id=' " + this.getId() + '\'' +
+                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", medKit=" + medKit +
+                ", diagnosisList=" + diagnosisList +
+                '}';
     }
 }

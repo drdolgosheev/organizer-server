@@ -5,11 +5,8 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +20,13 @@ import java.util.List;
 @Entity
 @Table(name = "drugs")
 @Data
-public class Drug extends BaseEntity{
+public class Drug extends BaseEntity {
 
     @Column(name = "drugname")
     String name;
+
+    @Column(name = "barcode")
+    String barcode;
 
     @Column(name = "drug_description")
     String description;
@@ -56,7 +56,8 @@ public class Drug extends BaseEntity{
     @ManyToMany(mappedBy = "drugList", fetch = FetchType.LAZY)
     private List<Diagnosis> diagnosisList;
 
-    public Drug() {}
+    public Drug() {
+    }
 
     public Drug(String name, String description, Date prodDate, Integer numOfPills, Integer takePillsInterval) {
         this.name = name;
@@ -146,5 +147,29 @@ public class Drug extends BaseEntity{
         this.diagnosisList = diagnosisList;
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
 
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Drug{" +
+                "'id=' " + this.getId() + '\'' +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", prodDate=" + prodDate +
+                ", expDate=" + expDate +
+                ", numOfPills=" + numOfPills +
+                ", numOfPillsPerDay=" + numOfPillsPerDay +
+                ", startTakePillsTime=" + startTakePillsTime +
+                ", takePillsInterval=" + takePillsInterval +
+                ", users=" + users +
+                ", diagnosisList=" + diagnosisList +
+                '}';
+    }
 }
