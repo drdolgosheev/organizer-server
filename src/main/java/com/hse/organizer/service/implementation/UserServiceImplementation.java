@@ -68,7 +68,7 @@ public class UserServiceImplementation implements UserService {
         User user = userRepository.getById(id);
 
         if (user == null) {
-            log.info("IN findById with id: {} do not exist", id);
+            log.info("IN findById user with id: {} do not exist", id);
         }
 
         log.info("IN findById user was found successfully: {}", user.toString());
@@ -96,7 +96,7 @@ public class UserServiceImplementation implements UserService {
         User user = userRepository.getById(userId);
 
         if (userId == null){
-            log.info("IN getUserDrugs with id: {} do not exist", userId);
+            log.info("IN getUserDrugs user with id: {} do not exist", userId);
         }
 
         return user.getMedKit();
@@ -107,7 +107,7 @@ public class UserServiceImplementation implements UserService {
         User user = userRepository.getById(userId);
 
         if (userId == null){
-            log.info("IN getUserDiagnosis with id: {} do not exist", userId);
+            log.info("IN getUserDiagnosis user with id: {} do not exist", userId);
         }
 
         return user.getDiagnosisList();
