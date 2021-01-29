@@ -1,5 +1,8 @@
 package com.hse.organizer.service.implementation;
 
+import com.hse.organizer.model.Diagnosis;
+import com.hse.organizer.model.Drug;
+import com.hse.organizer.model.Status;
 import com.hse.organizer.model.User;
 import com.hse.organizer.repository.DiagnosisRepository;
 import com.hse.organizer.repository.DrugRepository;
@@ -10,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,26 +37,79 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User register(User user) {
-        return null;
+        Date date = new Date();
+        List<Drug> drugList = new ArrayList<>();
+        List<Diagnosis> diagnosisList = new ArrayList<>();
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setDiagnosisList(diagnosisList);
+        user.setMedKit(drugList);
+        user.setStatus(Status.ACTIVE);
+        user.setCreated(date);
+
+        User regUser = userRepository.save(user);
+
+        log.info("IN register user was registered successfully: {}", regUser.toString());
+
+        return regUser;
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        List<User> result = userRepository.findAll();
+
+        log.info("Users were found successfully IN getAll");
+
+        return result;
     }
 
     @Override
     public User findById(Long id) {
-        return null;
+        User user = userRepository.getById(id);
+
+        if (user == null) {
+            log.info("IN findById with id: {} do not exist", id);
+        }
+
+        log.info("IN findById user was found successfully: {}", user.toString());
+
+        return user;
     }
 
     @Override
     public User findByName(String name) {
-        return null;
+        User user = userRepository.findByName(name);
+
+        log.info("IN findByName user was found successfully: {}", user.toString());
+
+        return user;
     }
 
     @Override
     public void delete(Long id) {
+        userRepository.deleteById(id);
+        log.info("IN delete user with id: {} was deleted successfully", id);
+    }
 
+    @Override
+    public List<Drug> getUserDrugs(Long userId) {
+        User user = userRepository.getById(userId);
+
+        if (userId == null){
+            log.info("IN getUserDrugs with id: {} do not exist", userId);
+        }
+
+        return user.getMedKit();
+    }
+
+    @Override
+    public List<Diagnosis> getUserDiagnosis(Long userId) {
+        User user = userRepository.getById(userId);
+
+        if (userId == null){
+            log.info("IN getUserDiagnosis with id: {} do not exist", userId);
+        }
+
+        return user.getDiagnosisList();
     }
 }
