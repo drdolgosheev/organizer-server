@@ -17,6 +17,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Implementation of {@link UserService} interface.
+ * Wrapper for {@link UserRepository} + business logic.
+ *
+ * @author Dolgosheev Dmitriy
+ * @version 1.0
+ */
+
 @Service
 @Slf4j
 public class UserServiceImplementation implements UserService {
@@ -95,7 +103,7 @@ public class UserServiceImplementation implements UserService {
     public List<Drug> getUserDrugs(Long userId) {
         User user = userRepository.getById(userId);
 
-        if (userId == null){
+        if (userId == null) {
             log.info("IN getUserDrugs user with id: {} do not exist", userId);
         }
 
@@ -106,7 +114,7 @@ public class UserServiceImplementation implements UserService {
     public List<Diagnosis> getUserDiagnosis(Long userId) {
         User user = userRepository.getById(userId);
 
-        if (userId == null){
+        if (userId == null) {
             log.info("IN getUserDiagnosis user with id: {} do not exist", userId);
         }
 
