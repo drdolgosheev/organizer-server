@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Dolgosheev Dmitriy
  * @version 1.0
  */
+
 public interface DrugRepository extends JpaRepository<Drug, Long> {
     Drug getById(Long id);
 
