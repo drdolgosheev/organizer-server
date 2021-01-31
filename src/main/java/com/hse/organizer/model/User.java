@@ -54,6 +54,13 @@ public class User extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "diagnosis_id", referencedColumnName = "id")})
     private List<Diagnosis> diagnosisList;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private List<Role> roleList;
+
     public User() {
     }
 
@@ -112,6 +119,23 @@ public class User extends BaseEntity {
     public void setMedKit(List<Drug> medKit) {
         this.medKit = medKit;
     }
+
+    public List<Diagnosis> getDiagnosisList() {
+        return diagnosisList;
+    }
+
+    public void setDiagnosisList(List<Diagnosis> diagnosisList) {
+        this.diagnosisList = diagnosisList;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+
 
     @Override
     public String toString() {

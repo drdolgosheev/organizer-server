@@ -1,11 +1,9 @@
 package com.hse.organizer.service.implementation;
 
-import com.hse.organizer.model.Diagnosis;
-import com.hse.organizer.model.Drug;
-import com.hse.organizer.model.Status;
-import com.hse.organizer.model.User;
+import com.hse.organizer.model.*;
 import com.hse.organizer.repository.DiagnosisRepository;
 import com.hse.organizer.repository.DrugRepository;
+import com.hse.organizer.repository.RoleRepository;
 import com.hse.organizer.repository.UserRepository;
 import com.hse.organizer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +31,17 @@ public class UserServiceImplementation implements UserService {
     private final DiagnosisRepository diagnosisRepository;
     private final DrugRepository drugRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public UserServiceImplementation(UserRepository userRepository, DiagnosisRepository diagnosisRepository,
-                                     DrugRepository drugRepository, BCryptPasswordEncoder passwordEncoder) {
+                                     DrugRepository drugRepository, BCryptPasswordEncoder passwordEncoder,
+                                     RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.diagnosisRepository = diagnosisRepository;
         this.drugRepository = drugRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -49,11 +50,18 @@ public class UserServiceImplementation implements UserService {
         List<Drug> drugList = new ArrayList<>();
         List<Diagnosis> diagnosisList = new ArrayList<>();
 
+
+        Role roleUser = roleRepository.findByName("ROLE_USER");
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(roleUser);
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setDiagnosisList(diagnosisList);
         user.setMedKit(drugList);
         user.setStatus(Status.ACTIVE);
         user.setCreated(date);
+        user.setUpdated(date);
+        user.setRoleList(roleList);
 
         User regUser = userRepository.save(user);
 
@@ -85,10 +93,10 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User findByName(String name) {
-        User user = userRepository.findByName(name);
+    public User findByName(String username) {
+        User user = userRepository.findByName(username);
 
-        log.info("IN findByName user was found successfully: {}", user.toString());
+        log.info("IN findByEmail user was found successfully: {}", user.toString());
 
         return user;
     }

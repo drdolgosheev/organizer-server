@@ -1,4 +1,5 @@
 package com.hse.organizer.model;
+
 /**
  * Enumeration that represents status of domain objects - ACTIVE, DELETED, etc.
  *
