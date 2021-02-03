@@ -3,6 +3,7 @@ package com.hse.organizer.service;
 import com.hse.organizer.model.Diagnosis;
 import com.hse.organizer.model.Drug;
 import com.hse.organizer.model.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
