@@ -1,9 +1,9 @@
 package com.hse.organizer.security.jwt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hse.organizer.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.hse.organizer.model.User;
 
 import java.util.Collection;
 import java.util.Date;
@@ -11,12 +11,12 @@ import java.util.Date;
 /**
  * Spring Security wrapper for class {@link User}.
  *
- * @author Dolgosheev Dmitriy
+ * @author Eugene Suleimanov
  * @version 1.0
  */
 
-
 public class JwtUser implements UserDetails {
+
     private final Long id;
     private final String username;
     private final String firstName;
@@ -47,7 +47,6 @@ public class JwtUser implements UserDetails {
         this.enabled = enabled;
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
-
 
     @JsonIgnore
     public Long getId() {

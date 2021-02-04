@@ -11,24 +11,34 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class JwtTokenFilter extends GenericFilterBean {
-    JwtTokenProvider tokenProvider;
+/**
+ * JWT token filter that handles all HTTP requests to application.
+ *
+ * @author Dolgosheev Dmitriy
+ * @version 1.0
+ */
 
-    public JwtTokenFilter(JwtTokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
+public class JwtTokenFilter extends GenericFilterBean {
+
+    private JwtTokenProvider jwtTokenProvider;
+
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = tokenProvider.resolveToken((HttpServletRequest) request);
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
+            throws IOException, ServletException {
 
-        if (token != null && tokenProvider.validateToken(token)) {
-            Authentication authentication = tokenProvider.getAuthentication(token);
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            Authentication auth = jwtTokenProvider.getAuthentication(token);
 
-            if (authentication != null) {
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (auth != null) {
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
-            chain.doFilter(request, response);
         }
+        filterChain.doFilter(req, res);
     }
+
 }

@@ -26,7 +26,7 @@ import java.util.List;
 public class User extends BaseEntity {
 
     @Column(name = "username")
-    String name;
+    String username;
 
     @Column(name = "first_name")
     private String firstName;
@@ -64,20 +64,20 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(String name, String firstName, String lastName, String email, String password) {
-        this.name = name;
+    public User(String username, String firstName, String lastName, String email, String password) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -141,7 +141,7 @@ public class User extends BaseEntity {
     public String toString() {
         return "User{" +
                 "'id=' " + this.getId() + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

@@ -93,8 +93,8 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User findByName(String username) {
-        User user = userRepository.findByName(username);
+    public User findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
 
         log.info("IN findByEmail user was found successfully: {}", user.toString());
 
