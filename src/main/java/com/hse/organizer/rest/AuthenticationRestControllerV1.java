@@ -1,6 +1,9 @@
 package com.hse.organizer.rest;
 
 import com.hse.organizer.dto.AuthenticationRequestDto;
+import com.hse.organizer.dto.RegisterUserRequestDto;
+import com.hse.organizer.dto.ResponseLoginDto;
+import com.hse.organizer.model.Role;
 import com.hse.organizer.model.User;
 import com.hse.organizer.security.jwt.JwtTokenProvider;
 import com.hse.organizer.service.UserService;
@@ -16,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * REST controller for authentication requests (login, logout, register, etc.)
@@ -51,19 +53,35 @@ public class AuthenticationRestControllerV1 {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             User user = userService.findByUsername(username);
 
-            if (user == null) {
+            if (user == null)
                 throw new UsernameNotFoundException("User with username: " + username + " not found");
-            }
 
-            String token = jwtTokenProvider.createToken(username, user.getRoleList());
+            List<Role> roleList = user.getRoleList();
+            String token = jwtTokenProvider.createToken(username, roleList);
 
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
-            response.put("token", token);
+            ResponseLoginDto response = new ResponseLoginDto();
+            response.setUsername(username);
+            response.setToken(token);
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
+        }
+    }
+
+    @PostMapping("register")
+    public ResponseEntity register(@RequestBody RegisterUserRequestDto requestDto) {
+        try {
+            User user = requestDto.toUser();
+            User result = userService.register(user);
+
+            if (result == null)
+                throw new UsernameNotFoundException("Invalid login or password");
+
+            return ResponseEntity.ok("User with username: " + user.getUsername() + " and id: " + user.getId()
+                    + " was registered successfully");
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid data");
         }
     }
 }

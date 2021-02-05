@@ -6,6 +6,7 @@ import com.hse.organizer.repository.DrugRepository;
 import com.hse.organizer.repository.RoleRepository;
 import com.hse.organizer.repository.UserRepository;
 import com.hse.organizer.service.UserService;
+import com.hse.organizer.service.implementation.validator.EmailValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,11 +64,17 @@ public class UserServiceImplementation implements UserService {
         user.setUpdated(date);
         user.setRoleList(roleList);
 
-        User regUser = userRepository.save(user);
-
-        log.info("IN register user was registered successfully: {}", regUser.toString());
-
-        return regUser;
+        boolean isPasswordValid = true;
+        boolean isEmailValid = EmailValidator.isValidEmailAddress(user.getEmail());
+        if(isEmailValid && isPasswordValid) {
+            User regUser = userRepository.save(user);
+            log.info("IN register user was registered successfully: {}", regUser.toString());
+            return regUser;
+        }
+        else {
+            log.info("IN register user has incorrect log or pass");
+            return null;
+        }
     }
 
     @Override
@@ -83,11 +90,10 @@ public class UserServiceImplementation implements UserService {
     public User findById(Long id) {
         User user = userRepository.getById(id);
 
-        if (user == null) {
+        if (user == null)
             log.info("IN findById user with id: {} do not exist", id);
-        }
-
-        log.info("IN findById user was found successfully: {}", user.toString());
+        else
+            log.info("IN findById user was found successfully: {}", user.toString());
 
         return user;
     }
