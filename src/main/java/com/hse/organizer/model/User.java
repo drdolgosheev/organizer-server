@@ -22,7 +22,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data
 public class User extends BaseEntity {
 
     @Column(name = "username")
@@ -76,7 +75,7 @@ public class User extends BaseEntity {
         return username;
     }
 
-    public void setName(String name) {
+    public void setUsername(String name) {
         this.username = username;
     }
 

@@ -1,5 +1,7 @@
 package com.hse.organizer.rest;
 
+import com.hse.organizer.dto.AddDrugToMedKitDto;
+import com.hse.organizer.dto.AuthenticationRequestDto;
 import com.hse.organizer.model.Drug;
 import com.hse.organizer.modules.implementation.DrugCodeValidatorImplementation;
 import com.hse.organizer.service.DrugService;
@@ -31,5 +33,12 @@ public class DrugRestControllerV1 {
         DrugCodeValidatorImplementation validator = new DrugCodeValidatorImplementation();
         Boolean result = validator.validate(code);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @PostMapping("addDrugToMedKit")
+    public ResponseEntity login(@RequestBody AddDrugToMedKitDto dto) {
+        drugService.addDrugToMedKit(dto.getDrug(), dto.getUsername());
+        return ResponseEntity.ok("OK");
     }
 }

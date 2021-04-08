@@ -1,6 +1,9 @@
 package com.hse.organizer.rest;
 
+import com.hse.organizer.dto.AddDrugToMedKitDto;
+import com.hse.organizer.dto.DrugForShare;
 import com.hse.organizer.dto.UserDto;
+import com.hse.organizer.dto.getMedKitDto;
 import com.hse.organizer.model.Diagnosis;
 import com.hse.organizer.model.Drug;
 import com.hse.organizer.model.User;
@@ -42,20 +45,22 @@ public class UserRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value="get/medKit/{id}")
-    public ResponseEntity<List<Drug>> getUserMedKitById(@PathVariable(name = "id") Long id){
-        User user = userService.findById(id);
+    @GetMapping(value="get/medKit/{username}")
+    public ResponseEntity<List<DrugForShare>> getUserMedKitById(@PathVariable(name = "username") String username){
+        User user = userService.findByUsername(username);
 
         if(user == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(user.getMedKit(), HttpStatus.OK);
+        getMedKitDto dto = new getMedKitDto();
+
+        return new ResponseEntity<>(dto.transferDrugs(user.getMedKit()), HttpStatus.OK);
     }
 
-    @GetMapping(value="get/diagnosis/{id}")
-    public ResponseEntity<List<Diagnosis>> getUserDiagnosisById(@PathVariable(name = "id") Long id){
-        User user = userService.findById(id);
+    @GetMapping(value="get/diagnosis/{username}")
+    public ResponseEntity<List<Diagnosis>> getUserDiagnosisById(@PathVariable(name = "username") String username){
+        User user = userService.findByUsername(username);
 
         if(user == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

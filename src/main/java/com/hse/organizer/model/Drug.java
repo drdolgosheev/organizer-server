@@ -19,7 +19,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "drugs")
-@Data
 public class Drug extends BaseEntity {
 
     @Column(name = "drugname")
@@ -56,14 +55,17 @@ public class Drug extends BaseEntity {
     @ManyToMany(mappedBy = "drugList", fetch = FetchType.LAZY)
     private List<Diagnosis> diagnosisList;
 
-    public Drug() {
-    }
+    public Drug() {}
 
-    public Drug(String name, String description, Date prodDate, Integer numOfPills, Integer takePillsInterval) {
+    public Drug(String name, String barcode, String description, Date prodDate, Date expDate, Integer numOfPills, Integer numOfPillsPerDay, Date startTakePillsTime, Integer takePillsInterval) {
         this.name = name;
+        this.barcode = barcode;
         this.description = description;
         this.prodDate = prodDate;
+        this.expDate = expDate;
         this.numOfPills = numOfPills;
+        this.numOfPillsPerDay = numOfPillsPerDay;
+        this.startTakePillsTime = startTakePillsTime;
         this.takePillsInterval = takePillsInterval;
     }
 
@@ -153,23 +155,5 @@ public class Drug extends BaseEntity {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Drug{" +
-                "'id=' " + this.getId() + '\'' +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", prodDate=" + prodDate +
-                ", expDate=" + expDate +
-                ", numOfPills=" + numOfPills +
-                ", numOfPillsPerDay=" + numOfPillsPerDay +
-                ", startTakePillsTime=" + startTakePillsTime +
-                ", takePillsInterval=" + takePillsInterval +
-                ", users=" + users +
-                ", diagnosisList=" + diagnosisList +
-                '}';
     }
 }

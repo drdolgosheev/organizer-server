@@ -1,12 +1,15 @@
 package com.hse.organizer.service.implementation;
 
 import com.hse.organizer.model.Drug;
+import com.hse.organizer.model.User;
 import com.hse.organizer.repository.DrugRepository;
+import com.hse.organizer.repository.UserRepository;
 import com.hse.organizer.service.DrugService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,14 +17,51 @@ import java.util.List;
 public class DrugServiceImplementation implements DrugService {
 
     private final DrugRepository drugRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public DrugServiceImplementation(DrugRepository drugRepository) {
+    public DrugServiceImplementation(DrugRepository drugRepository, UserRepository userRepository) {
         this.drugRepository = drugRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public List<Drug> getAllDrugs() {
         return drugRepository.findAll();
+    }
+
+    @Override
+    public void addDrug(Drug drug) {
+        drugRepository.save(drug);
+        log.info("Drug added successfully");
+    }
+
+    @Override
+    public void addDrugToMedKit(Drug drug, String username) {
+        User user = userRepository.findByUsername(username);
+        drugRepository.save(drug);
+
+        drug = drugRepository.findByName(drug.getName());
+        List<Drug> userMedKit = user.getMedKit();
+
+        if(userMedKit == null){
+            userMedKit = new ArrayList<>();
+        }
+
+        userMedKit.add(drug);
+
+        List<User> users = drug.getUsers();
+        if(users == null) {
+            users = new ArrayList<>();
+        }
+
+        user.setMedKit(userMedKit);
+        users.add(user);
+        drug.setUsers(users);
+
+        userRepository.save(user);
+        drugRepository.save(drug);
+
+        log.info("MedKit updated successfully");
     }
 }
