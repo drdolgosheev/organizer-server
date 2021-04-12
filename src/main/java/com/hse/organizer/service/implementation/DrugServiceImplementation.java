@@ -1,5 +1,6 @@
 package com.hse.organizer.service.implementation;
 
+import com.hse.organizer.dto.addDrugDto;
 import com.hse.organizer.model.Drug;
 import com.hse.organizer.model.User;
 import com.hse.organizer.repository.DrugRepository;
@@ -31,11 +32,24 @@ public class DrugServiceImplementation implements DrugService {
     }
 
     @Override
-    public void addDrug(Drug drug) {
+    public void addDrug(addDrugDto dto) {
+        Drug drug = new Drug();
+        drug.setName(dto.getName());
+        drug.setBarcode(dto.getBarcode());
+        drug.setDescription(dto.getDescription());
+        drug.setExpDate(dto.getExpDate());
+        drug.setProdDate(dto.getProdDate());
+        drug.setNumOfPills(dto.getNumOfPills());
+
         drugRepository.save(drug);
         log.info("Drug added successfully");
     }
 
+    /**
+     * Method just for developers
+     * @param drug drug
+     * @param username username
+     */
     @Override
     public void addDrugToMedKit(Drug drug, String username) {
         User user = userRepository.findByUsername(username);
@@ -63,5 +77,11 @@ public class DrugServiceImplementation implements DrugService {
         drugRepository.save(drug);
 
         log.info("MedKit updated successfully");
+    }
+
+    @Override
+    public Drug findDrugByBarCode(String barcode) {
+        Drug drug = drugRepository.findByBarcode(barcode);
+        return drug;
     }
 }

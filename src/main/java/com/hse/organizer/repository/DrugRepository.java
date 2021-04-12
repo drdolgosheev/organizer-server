@@ -14,4 +14,6 @@ public interface DrugRepository extends JpaRepository<Drug, Long> {
     Drug getById(Long id);
 
     Drug findByName(String name);
+
+    Drug findByBarcode(String barcode);
 }

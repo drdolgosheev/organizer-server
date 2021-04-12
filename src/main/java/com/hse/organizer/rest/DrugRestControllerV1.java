@@ -2,6 +2,7 @@ package com.hse.organizer.rest;
 
 import com.hse.organizer.dto.AddDrugToMedKitDto;
 import com.hse.organizer.dto.AuthenticationRequestDto;
+import com.hse.organizer.dto.addDrugDto;
 import com.hse.organizer.model.Drug;
 import com.hse.organizer.modules.implementation.DrugCodeValidatorImplementation;
 import com.hse.organizer.service.DrugService;
@@ -35,10 +36,21 @@ public class DrugRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping("addDrug")
+    public ResponseEntity addDrug(@RequestBody addDrugDto dto){
+        drugService.addDrug(dto);
+        return ResponseEntity.ok("OK");
+    }
 
     @PostMapping("addDrugToMedKit")
-    public ResponseEntity login(@RequestBody AddDrugToMedKitDto dto) {
+    public ResponseEntity addDrugToMedKit(@RequestBody AddDrugToMedKitDto dto) {
         drugService.addDrugToMedKit(dto.getDrug(), dto.getUsername());
         return ResponseEntity.ok("OK");
+    }
+
+    @GetMapping("getDrugByBarcode/{code}")
+    public ResponseEntity<Drug> getDrugByBarCode(@PathVariable(name = "code") String barcode){
+        Drug drug = drugService.findDrugByBarCode(barcode);
+        return new ResponseEntity<>(drug, HttpStatus.OK);
     }
 }
