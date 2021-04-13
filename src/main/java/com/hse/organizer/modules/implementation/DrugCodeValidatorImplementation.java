@@ -9,6 +9,10 @@ public class DrugCodeValidatorImplementation implements DrugCodeValidator {
      */
     @Override
     public Boolean validate(String code) {
+
+        if(code.length() != 13)
+            return false;
+
         String evenNumbers, oddNumbers, curSum;
         int evenNumberSum = 0, oddNumberSum = 0, sumCurrent = 0, currentControlSum;
 

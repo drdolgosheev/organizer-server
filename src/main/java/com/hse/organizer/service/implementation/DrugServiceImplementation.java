@@ -2,6 +2,7 @@ package com.hse.organizer.service.implementation;
 
 import com.hse.organizer.dto.addDrugDto;
 import com.hse.organizer.model.Drug;
+import com.hse.organizer.model.Status;
 import com.hse.organizer.model.User;
 import com.hse.organizer.repository.DrugRepository;
 import com.hse.organizer.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,15 +33,23 @@ public class DrugServiceImplementation implements DrugService {
         return drugRepository.findAll();
     }
 
+    /**
+     * Add drug to database
+     * @param dto user input of drug info
+     */
     @Override
     public void addDrug(addDrugDto dto) {
         Drug drug = new Drug();
+        Date date = new Date();
         drug.setName(dto.getName());
         drug.setBarcode(dto.getBarcode());
         drug.setDescription(dto.getDescription());
         drug.setExpDate(dto.getExpDate());
         drug.setProdDate(dto.getProdDate());
         drug.setNumOfPills(dto.getNumOfPills());
+        drug.setCreated(date);
+        drug.setUpdated(date);
+        drug.setStatus(Status.ACTIVE);
 
         drugRepository.save(drug);
         log.info("Drug added successfully");
