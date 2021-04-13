@@ -63,28 +63,33 @@ public class DrugServiceImplementation implements DrugService {
     @Override
     public void addDrugToMedKit(Drug drug, String username) {
         User user = userRepository.findByUsername(username);
-        drugRepository.save(drug);
 
-        drug = drugRepository.findByName(drug.getName());
+        Drug drug_1 = drugRepository.findByBarcode(drug.getBarcode());
+
+        if(drug_1 == null){
+            drugRepository.save(drug);
+        }
+        drug_1 = drugRepository.findByBarcode(drug.getBarcode());
+
         List<Drug> userMedKit = user.getMedKit();
 
         if(userMedKit == null){
             userMedKit = new ArrayList<>();
         }
 
-        userMedKit.add(drug);
+        userMedKit.add(drug_1);
 
-        List<User> users = drug.getUsers();
+        List<User> users = drug_1.getUsers();
         if(users == null) {
             users = new ArrayList<>();
         }
 
         user.setMedKit(userMedKit);
         users.add(user);
-        drug.setUsers(users);
+        drug_1.setUsers(users);
 
         userRepository.save(user);
-        drugRepository.save(drug);
+        drugRepository.save(drug_1);
 
         log.info("MedKit updated successfully");
     }
