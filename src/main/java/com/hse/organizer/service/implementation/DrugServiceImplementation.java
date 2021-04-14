@@ -70,6 +70,11 @@ public class DrugServiceImplementation implements DrugService {
             drugRepository.save(drug);
         }
         drug_1 = drugRepository.findByBarcode(drug.getBarcode());
+        drug_1.setNumOfPillsPerDay(drug.getNumOfPillsPerDay());
+        drug_1.setTakePillsInterval(drug.getNumOfPillsPerDay());
+        drug_1.setUserGroup(drug.getUserGroup());
+        drug_1.setStartTakePillsTime(drug.getStartTakePillsTime());
+        drug_1.setExpDate(drug.getExpDate());
 
         List<Drug> userMedKit = user.getMedKit();
 
