@@ -49,6 +49,9 @@ public class Drug extends BaseEntity {
     @Column(name = "take_pills_interval")
     Integer takePillsInterval;
 
+    @Column(name = "user_group")
+    private String userGroup;
+
     @ManyToMany(mappedBy = "medKit", fetch = FetchType.LAZY)
     private List<User> users;
 
@@ -57,7 +60,7 @@ public class Drug extends BaseEntity {
 
     public Drug() {}
 
-    public Drug(String name, String barcode, String description, Date prodDate, Date expDate, Integer numOfPills, Integer numOfPillsPerDay, Date startTakePillsTime, Integer takePillsInterval) {
+    public Drug(String name, String barcode, String description, Date prodDate, Date expDate, Integer numOfPills, Integer numOfPillsPerDay, Date startTakePillsTime, Integer takePillsInterval, String userGroup) {
         this.name = name;
         this.barcode = barcode;
         this.description = description;
@@ -67,6 +70,7 @@ public class Drug extends BaseEntity {
         this.numOfPillsPerDay = numOfPillsPerDay;
         this.startTakePillsTime = startTakePillsTime;
         this.takePillsInterval = takePillsInterval;
+        this.userGroup = userGroup;
     }
 
     public String getName() {
@@ -155,5 +159,13 @@ public class Drug extends BaseEntity {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public String getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(String userGroup) {
+        this.userGroup = userGroup;
     }
 }

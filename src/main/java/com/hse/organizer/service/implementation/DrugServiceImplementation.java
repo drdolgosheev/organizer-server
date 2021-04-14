@@ -87,6 +87,7 @@ public class DrugServiceImplementation implements DrugService {
         user.setMedKit(userMedKit);
         users.add(user);
         drug_1.setUsers(users);
+        drug_1.setUserGroup(drug.getUserGroup());
 
         userRepository.save(user);
         drugRepository.save(drug_1);

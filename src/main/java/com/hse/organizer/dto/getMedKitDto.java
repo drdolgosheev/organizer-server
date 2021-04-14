@@ -16,7 +16,7 @@ public class getMedKitDto {
             Drug cur_dr = drugList.get(i);
             DrugForShare cur_drug = new DrugForShare(cur_dr.getName(), cur_dr.getId(), cur_dr.getBarcode(),
                     cur_dr.getDescription(), cur_dr.getProdDate(), cur_dr.getExpDate(), cur_dr.getNumOfPills(),
-                    cur_dr.getNumOfPillsPerDay(), cur_dr.getStartTakePillsTime(), cur_dr.getTakePillsInterval());
+                    cur_dr.getNumOfPillsPerDay(), cur_dr.getStartTakePillsTime(), cur_dr.getTakePillsInterval(), cur_dr.getUserGroup());
             this.drugs.add(cur_drug);
         }
         return this.drugs;
