@@ -1,12 +1,9 @@
 package com.hse.organizer.model;
 
-import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -58,9 +55,16 @@ public class Drug extends BaseEntity {
     @ManyToMany(mappedBy = "drugList", fetch = FetchType.LAZY)
     private List<Diagnosis> diagnosisList;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(name = "drugs_take_time",
+            joinColumns = {@JoinColumn(name = "take_date_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "drug_id", referencedColumnName = "id")})
+    private List<DateDrugs> dateDrugsList;
+
     public Drug() {}
 
-    public Drug(String name, String barcode, String description, Date prodDate, Date expDate, Integer numOfPills, Integer numOfPillsPerDay, Date startTakePillsTime, Integer takePillsInterval, String userGroup) {
+    public Drug(String name, String barcode, String description, Date prodDate, Date expDate, Integer numOfPills, Integer numOfPillsPerDay, Date startTakePillsTime, Integer takePillsInterval, String userGroup, List<DateDrugs> dateDrugsList) {
         this.name = name;
         this.barcode = barcode;
         this.description = description;
@@ -71,6 +75,7 @@ public class Drug extends BaseEntity {
         this.startTakePillsTime = startTakePillsTime;
         this.takePillsInterval = takePillsInterval;
         this.userGroup = userGroup;
+        this.dateDrugsList = dateDrugsList;
     }
 
     public String getName() {
@@ -167,5 +172,13 @@ public class Drug extends BaseEntity {
 
     public void setUserGroup(String userGroup) {
         this.userGroup = userGroup;
+    }
+
+    public List<DateDrugs> getDateDrugsList() {
+        return dateDrugsList;
+    }
+
+    public void setDateDrugsList(List<DateDrugs> dateDrugsList) {
+        this.dateDrugsList = dateDrugsList;
     }
 }

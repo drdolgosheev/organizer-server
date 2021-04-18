@@ -1,9 +1,11 @@
 package com.hse.organizer.service.implementation;
 
 import com.hse.organizer.dto.addDrugDto;
+import com.hse.organizer.model.DateDrugs;
 import com.hse.organizer.model.Drug;
 import com.hse.organizer.model.Status;
 import com.hse.organizer.model.User;
+import com.hse.organizer.repository.DateDrugRepository;
 import com.hse.organizer.repository.DrugRepository;
 import com.hse.organizer.repository.UserRepository;
 import com.hse.organizer.service.DrugService;
@@ -11,9 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 @Slf4j
@@ -21,11 +26,13 @@ public class DrugServiceImplementation implements DrugService {
 
     private final DrugRepository drugRepository;
     private final UserRepository userRepository;
+    private final DateDrugRepository dateDrugRepository;
 
     @Autowired
-    public DrugServiceImplementation(DrugRepository drugRepository, UserRepository userRepository) {
+    public DrugServiceImplementation(DrugRepository drugRepository, UserRepository userRepository, DateDrugRepository dateDrugRepository) {
         this.drugRepository = drugRepository;
         this.userRepository = userRepository;
+        this.dateDrugRepository = dateDrugRepository;
     }
 
     @Override
@@ -104,5 +111,54 @@ public class DrugServiceImplementation implements DrugService {
     public Drug findDrugByBarCode(String barcode) {
         Drug drug = drugRepository.findByBarcode(barcode);
         return drug;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public List<DateDrugs> getDrugTakeTime(String barcode) {
+        Drug drug = drugRepository.findByBarcode(barcode);
+
+        List<DateDrugs> result = new ArrayList<>();
+        int startTime = 8;
+        int endTime = 22;
+
+        int hoursInADay = endTime - startTime;
+
+        DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        df2.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
+
+        for (int i = 0; i < drug.getNumOfPillsPerDay(); i++) {
+            Date locDate = new Date();
+            DateDrugs dateDrugs = new DateDrugs();
+            int step = hoursInADay/drug.getNumOfPillsPerDay();
+            locDate.setHours(8+step*(i+1));
+            dateDrugs.setDate(locDate);
+            result.add(dateDrugs);
+            log.info("Number: " + i + " Time: " + df2.format(dateDrugs.getDate()));
+        }
+
+        List<Drug> drugList = new ArrayList<>();
+        drugList.add(drug);
+        List<Long> idList = new ArrayList<>();
+
+        for (int i = 0; i < result.size(); i++) {
+            result.get(i).setDrugListDate(drugList);
+            result.get(i).setDrugId(drug.getId());
+        }
+
+        List<DateDrugs> tmp = dateDrugRepository.getAllByDrugId(drug.getId());
+        if(tmp.isEmpty()) {
+            for (int i = 0; i < result.size(); i++) {
+                dateDrugRepository.save(result.get(i));
+            }
+        }
+
+        List<DateDrugs> res = dateDrugRepository.getAllByDrugId(drug.getId());
+
+        drug.setDateDrugsList(res);
+        drugRepository.save(drug);
+
+        log.info("IN DRUG SERVICE: " + drug.toString() + "\n WAS SAVED SUCCESSFULLY");
+        return result;
     }
 }

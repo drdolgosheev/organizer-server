@@ -1,9 +1,7 @@
 package com.hse.organizer.rest;
 
-import com.hse.organizer.dto.AddDrugToMedKitDto;
-import com.hse.organizer.dto.AuthenticationRequestDto;
-import com.hse.organizer.dto.DrugFullDto;
-import com.hse.organizer.dto.addDrugDto;
+import com.hse.organizer.dto.*;
+import com.hse.organizer.model.DateDrugs;
 import com.hse.organizer.model.Drug;
 import com.hse.organizer.modules.implementation.DrugCodeValidatorImplementation;
 import com.hse.organizer.service.DrugService;
@@ -56,6 +54,13 @@ public class DrugRestControllerV1 {
                 drug.getName(),drug.getBarcode(), drug.getDescription(),
                 drug.getProdDate(), drug.getExpDate(), drug.getNumOfPills(), drug.getNumOfPillsPerDay(),
                 drug.getStartTakePillsTime(),drug.getTakePillsInterval());
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @GetMapping("getDrugsTakeTime/{code}")
+    public  ResponseEntity<TakeTimeDto> gerDrugsTakeTime(@PathVariable(name = "code") String barcode){
+        List<DateDrugs> result = drugService.getDrugTakeTime(barcode);
+        TakeTimeDto dto = new TakeTimeDto(result);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }
