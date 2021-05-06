@@ -24,13 +24,14 @@ public class DrugFullDto {
     Integer numOfPillsPerDay;
     Date startTakePillsTime;
     Integer takePillsInterval;
+    String group;
 
     public DrugFullDto(){}
 
     public DrugFullDto(Long id,Date created, Date updated, String status, String name, String barcode,
                        String description, Date prodDate, Date expDate,
                        Integer numOfPills, Integer numOfPillsPerDay, Date startTakePillsTime,
-                       Integer takePillsInterval) {
+                       Integer takePillsInterval, String group) {
         this.id = id;
         this.created = created;
         this.updated = updated;
@@ -44,6 +45,7 @@ public class DrugFullDto {
         this.numOfPillsPerDay = numOfPillsPerDay;
         this.startTakePillsTime = startTakePillsTime;
         this.takePillsInterval = takePillsInterval;
+        this.group = group;
     }
 
     public void setId(Long id) {
@@ -96,5 +98,13 @@ public class DrugFullDto {
 
     public void setTakePillsInterval(Integer takePillsInterval) {
         this.takePillsInterval = takePillsInterval;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

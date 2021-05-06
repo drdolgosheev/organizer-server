@@ -78,7 +78,7 @@ public class DrugRestControllerV1 {
         DrugFullDto dto = new DrugFullDto(drug.getId(),drug.getCreated(), drug.getUpdated(), drug.getStatus().toString(),
                 drug.getName(),drug.getBarcode(), drug.getDescription(),
                 drug.getProdDate(), drug.getExpDate(), drug.getNumOfPills(), drug.getNumOfPillsPerDay(),
-                drug.getStartTakePillsTime(),drug.getTakePillsInterval());
+                drug.getStartTakePillsTime(),drug.getTakePillsInterval(), drug.getUserGroup());
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
