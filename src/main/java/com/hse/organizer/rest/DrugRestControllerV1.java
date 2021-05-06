@@ -101,8 +101,28 @@ public class DrugRestControllerV1 {
     @GetMapping("recountNumberOfPills/{code}")
     public  ResponseEntity<IntegerDto> recountNumberOfPills(@PathVariable(name = "code") String barcode){
         Integer result = drugService.recountNumberOfPills(barcode);
+
         IntegerDto dto = new IntegerDto();
         dto.setNumber(result);
+
+        return ResponseEntity.ok(dto);
+    }
+
+    /**
+     * Get drug barcode by drug name
+     * @param name drug name
+     * @return drug barcode if exists, else return empty answer
+     */
+    @GetMapping("getBarcodeByName/{name}")
+    public  ResponseEntity<StringDto> getBarcodeByName(@PathVariable(name = "name") String name){
+        String result = drugService.getBarCodeByName(name);
+
+        if(result == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        StringDto dto = new StringDto();
+        dto.setData(result);
+
         return ResponseEntity.ok(dto);
     }
 }

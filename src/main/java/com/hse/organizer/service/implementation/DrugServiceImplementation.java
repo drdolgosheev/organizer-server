@@ -13,6 +13,8 @@ import com.hse.organizer.service.DrugService;
 import com.hse.organizer.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -220,5 +222,13 @@ public class DrugServiceImplementation implements DrugService {
         return curNumOfPills;
     }
 
+    @Override
+    public String getBarCodeByName(String name) {
+        Drug drug = drugRepository.findByName(name);
 
+        if(drug == null)
+            return null;
+
+        return drug.getBarcode();
+    }
 }
