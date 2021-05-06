@@ -167,4 +167,44 @@ public class UserServiceImplementation implements UserService {
 
         return user.getDiagnosisList();
     }
+
+    /**
+     * Delete drug from user's med kit
+     * @param barcode drug barcode
+     * @param username username
+     * @return false if, do not delete, true if deleted successfully
+     */
+    @Override
+    public Boolean deleteFromMedKit(String barcode, String username) {
+        Drug drug = drugRepository.findByBarcode(barcode);
+        User user = userRepository.findByUsername(username);
+
+        if(drug == null || user == null)
+            return false;
+
+        List<Drug> curDrugList = user.getMedKit();
+        List<User> curUserList = drug.getUsers();
+
+        for (int i = 0; i < curDrugList.size(); i++) {
+            Drug locDrug = curDrugList.get(i);
+            if(locDrug.getBarcode().equals(barcode)){
+                curDrugList.remove(locDrug);
+            }
+        }
+
+        for (int i = 0; i < curUserList.size(); i++) {
+            User locUser = curUserList.get(i);
+            if(locUser.getUsername().equals(username)){
+                curUserList.remove(locUser);
+            }
+        }
+
+        drug.setUsers(curUserList);
+        user.setMedKit(curDrugList);
+
+        drugRepository.save(drug);
+        userRepository.save(user);
+
+        return true;
+    }
 }

@@ -80,10 +80,23 @@ public class UserRestControllerV1 {
         return new ResponseEntity<>(user.getDiagnosisList(), HttpStatus.OK);
     }
 
-    @DeleteMapping("delete/{code}")
-    public  ResponseEntity<String> deleteFromMedKit(@PathVariable(name = "code") String barcode){
-
-        return ResponseEntity.ok("Drug with barcode" + barcode + " deleted successfully");
+    /**
+     * Method delete drug from user's med kit
+     * @param dto barcode, username
+     * @return Status
+     */
+    @DeleteMapping("deleteDrugFromMedKit")
+    public  ResponseEntity<String> deleteFromMedKit(@RequestBody BarcodeDto dto){
+        String username = dto.getUsername();
+        String barcode = dto.getBarcode();
+        Boolean result = userService.deleteFromMedKit(barcode, username);
+        if (result) {
+            return ResponseEntity.ok("Drug with barcode: " + barcode + " deleted successfully from user's "
+                    + username +" med kit");
+        }
+        else {
+            return ResponseEntity.ok("Drug isn't not connected with user");
+        }
     }
 }
 

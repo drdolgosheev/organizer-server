@@ -28,4 +28,6 @@ public interface UserService {
     List<Drug> getUserDrugs(Long userId);
 
     List<Diagnosis> getUserDiagnosis(Long userId);
+
+    Boolean deleteFromMedKit(String barcode, String username);
 }

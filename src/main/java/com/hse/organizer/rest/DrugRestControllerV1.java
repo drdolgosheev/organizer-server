@@ -94,7 +94,7 @@ public class DrugRestControllerV1 {
     }
 
     @GetMapping("recountNumberOfPills/{code}")
-    public  ResponseEntity<String> deleteFromMedKit(@PathVariable(name = "code") String barcode){
+    public  ResponseEntity<String> recountNumberOfPills(@PathVariable(name = "code") String barcode){
         Integer result = drugService.recountNumberOfPills(barcode);
         return ResponseEntity.ok(result + " pills left");
     }
