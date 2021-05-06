@@ -45,6 +45,11 @@ public class UserServiceImplementation implements UserService {
         this.roleRepository = roleRepository;
     }
 
+    /**
+     * Register user
+     * @param user User info
+     * @return user if registered successfully
+     */
     @Override
     public User register(User user) {
         Date date = new Date();
@@ -77,6 +82,10 @@ public class UserServiceImplementation implements UserService {
         }
     }
 
+    /**
+     * Get all registered users
+     * @return List all of users in db
+     */
     @Override
     public List<User> getAll() {
         List<User> result = userRepository.findAll();
@@ -86,6 +95,11 @@ public class UserServiceImplementation implements UserService {
         return result;
     }
 
+    /**
+     * Get user by id
+     * @param id user id
+     * @return user
+     */
     @Override
     public User findById(Long id) {
         User user = userRepository.getById(id);
@@ -98,6 +112,11 @@ public class UserServiceImplementation implements UserService {
         return user;
     }
 
+    /**
+     * Get user by username
+     * @param username user username
+     * @return user
+     */
     @Override
     public User findByUsername(String username) {
         User user = userRepository.findByUsername(username);
@@ -107,12 +126,21 @@ public class UserServiceImplementation implements UserService {
         return user;
     }
 
+    /**
+     * Delete user from db
+     * @param id user ID
+     */
     @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
         log.info("IN delete user with id: {} was deleted successfully", id);
     }
 
+    /**
+     * Return user med kit
+     * @param userId user ID
+     * @return List of drugs connected with user
+     */
     @Override
     public List<Drug> getUserDrugs(Long userId) {
         User user = userRepository.getById(userId);
@@ -124,6 +152,11 @@ public class UserServiceImplementation implements UserService {
         return user.getMedKit();
     }
 
+    /**
+     * Gets user Diagnosis
+     * @param userId user ID
+     * @return List og user diagnosis
+     */
     @Override
     public List<Diagnosis> getUserDiagnosis(Long userId) {
         User user = userRepository.getById(userId);

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * REST controller user connected requestst.
+ * REST controller user connected requests.
  *
  * @author Dolgosheev Dmitriy
  * @version 1.0
@@ -32,6 +32,10 @@ public class UserRestControllerV1 {
         this.userService = userService;
     }
 
+    /**
+     * @param id user ID
+     * @return HTTP response: body UserDto
+     */
     @GetMapping(value = "get/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Long id){
         User user = userService.findById(id);
@@ -45,6 +49,10 @@ public class UserRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * @param username user username
+     * @return List of Drug
+     */
     @GetMapping(value="get/medKit/{username}")
     public ResponseEntity<List<DrugForShare>> getUserMedKitById(@PathVariable(name = "username") String username){
         User user = userService.findByUsername(username);
@@ -58,6 +66,10 @@ public class UserRestControllerV1 {
         return new ResponseEntity<>(dto.transferDrugs(user.getMedKit()), HttpStatus.OK);
     }
 
+    /**
+     * @param username user username
+     * @return List of Diagnosis
+     */
     @GetMapping(value="get/diagnosis/{username}")
     public ResponseEntity<List<Diagnosis>> getUserDiagnosisById(@PathVariable(name = "username") String username){
         User user = userService.findByUsername(username);

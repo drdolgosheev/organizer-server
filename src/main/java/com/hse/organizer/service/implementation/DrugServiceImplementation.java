@@ -7,8 +7,10 @@ import com.hse.organizer.model.Status;
 import com.hse.organizer.model.User;
 import com.hse.organizer.repository.DateDrugRepository;
 import com.hse.organizer.repository.DrugRepository;
+import com.hse.organizer.repository.RoleRepository;
 import com.hse.organizer.repository.UserRepository;
 import com.hse.organizer.service.DrugService;
+import com.hse.organizer.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+
+/**
+ * Implementation of {@link DrugService} interface.
+ * Wrapper for {@link DrugRepository} + business logic.
+ *
+ * @author Dolgosheev Dmitriy
+ * @version 1.0
+ */
 
 @Service
 @Slf4j
@@ -107,12 +117,22 @@ public class DrugServiceImplementation implements DrugService {
         log.info("MedKit updated successfully");
     }
 
+    /**
+     * Method to get drug from DB
+     * @param barcode drug barcode
+     * @return Drug
+     */
     @Override
     public Drug findDrugByBarCode(String barcode) {
         Drug drug = drugRepository.findByBarcode(barcode);
         return drug;
     }
 
+    /**
+     * Method to get drug take date, time
+     * @param barcode drug barcode
+     * @return List of dates
+     */
     @SuppressWarnings("deprecation")
     @Override
     public List<DateDrugs> getDrugTakeTime(String barcode) {

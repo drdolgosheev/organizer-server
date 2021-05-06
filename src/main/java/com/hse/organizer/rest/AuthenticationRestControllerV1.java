@@ -45,6 +45,10 @@ public class AuthenticationRestControllerV1 {
         this.userService = userService;
     }
 
+    /**
+     * @param requestDto - user login, password
+     * @return JWT Token
+     */
     @PostMapping("login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
         try {
@@ -69,6 +73,11 @@ public class AuthenticationRestControllerV1 {
         }
     }
 
+    /**
+     * This method just add user to data base
+     * @param requestDto user info
+     * @return String if everything is ok
+     */
     @PostMapping("register")
     public ResponseEntity register(@RequestBody RegisterUserRequestDto requestDto) {
         try {

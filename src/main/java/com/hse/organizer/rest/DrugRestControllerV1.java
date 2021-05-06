@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller drug connected requests.
+ *
+ * @author Dolgosheev Dmitriy
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/api/v1/drug/")
 public class DrugRestControllerV1 {
@@ -22,12 +28,19 @@ public class DrugRestControllerV1 {
         this.drugService = drugService;
     }
 
+    /**
+     * @return Return all drugs which are in DB
+     */
     @GetMapping(value = "get/all")
     public ResponseEntity<List<Drug>> getAllDrugs() {
         List<Drug> result = drugService.getAllDrugs();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * @param code drug barcode
+     * @return Boolean validation result
+     */
     @GetMapping(value = "validate/{code}")
     public ResponseEntity<Boolean> validateDrug(@PathVariable(name = "code") String code) {
         DrugCodeValidatorImplementation validator = new DrugCodeValidatorImplementation();
@@ -35,18 +48,30 @@ public class DrugRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * @param dto Drug information
+     * @return String "OK"
+     */
     @PostMapping("addDrug")
     public ResponseEntity addDrug(@RequestBody addDrugDto dto){
         drugService.addDrug(dto);
         return ResponseEntity.ok("OK");
     }
 
+    /**
+     * @param dto Drug information and user Username
+     * @return String "OK"
+     */
     @PostMapping("addDrugToMedKit")
     public ResponseEntity addDrugToMedKit(@RequestBody AddDrugToMedKitDto dto) {
         drugService.addDrugToMedKit(dto.getDrug(), dto.getUsername());
         return ResponseEntity.ok("OK");
     }
 
+    /**
+     * @param barcode drug barcode
+     * @return Drug
+     */
     @GetMapping("getDrugByBarcode/{code}")
     public ResponseEntity<DrugFullDto> getDrugByBarCode(@PathVariable(name = "code") String barcode){
         Drug drug = drugService.findDrugByBarCode(barcode);
@@ -57,6 +82,10 @@ public class DrugRestControllerV1 {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    /**
+     * @param barcode drug barcode
+     * @return List of DataTime, to take pills
+     */
     @GetMapping("getDrugsTakeTime/{code}")
     public  ResponseEntity<TakeTimeDto> gerDrugsTakeTime(@PathVariable(name = "code") String barcode){
         List<DateDrugs> result = drugService.getDrugTakeTime(barcode);
