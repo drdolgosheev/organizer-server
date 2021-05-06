@@ -93,9 +93,16 @@ public class DrugRestControllerV1 {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    /**
+     * Recount number of pills
+     * @param barcode drug barcode
+     * @return Amount of pills left
+     */
     @GetMapping("recountNumberOfPills/{code}")
-    public  ResponseEntity<String> recountNumberOfPills(@PathVariable(name = "code") String barcode){
+    public  ResponseEntity<IntegerDto> recountNumberOfPills(@PathVariable(name = "code") String barcode){
         Integer result = drugService.recountNumberOfPills(barcode);
-        return ResponseEntity.ok(result + " pills left");
+        IntegerDto dto = new IntegerDto();
+        dto.setNumber(result);
+        return ResponseEntity.ok(dto);
     }
 }
