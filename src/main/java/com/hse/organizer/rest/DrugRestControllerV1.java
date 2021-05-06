@@ -92,4 +92,10 @@ public class DrugRestControllerV1 {
         TakeTimeDto dto = new TakeTimeDto(result);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
+    @GetMapping("recountNumberOfPills/{code}")
+    public  ResponseEntity<String> deleteFromMedKit(@PathVariable(name = "code") String barcode){
+        Integer result = drugService.recountNumberOfPills(barcode);
+        return ResponseEntity.ok(result + " pills left");
+    }
 }

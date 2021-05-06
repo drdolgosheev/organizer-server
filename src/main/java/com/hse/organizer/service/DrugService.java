@@ -16,4 +16,6 @@ public interface DrugService {
     Drug findDrugByBarCode(String barcode);
 
     List<DateDrugs> getDrugTakeTime(String barcode);
+
+    Integer recountNumberOfPills(String barcode);
 }

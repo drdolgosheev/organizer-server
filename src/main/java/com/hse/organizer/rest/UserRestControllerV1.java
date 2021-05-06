@@ -1,12 +1,9 @@
 package com.hse.organizer.rest;
 
-import com.hse.organizer.dto.AddDrugToMedKitDto;
-import com.hse.organizer.dto.DrugForShare;
-import com.hse.organizer.dto.UserDto;
-import com.hse.organizer.dto.getMedKitDto;
+import com.hse.organizer.dto.*;
 import com.hse.organizer.model.Diagnosis;
-import com.hse.organizer.model.Drug;
 import com.hse.organizer.model.User;
+import com.hse.organizer.service.DrugService;
 import com.hse.organizer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +23,12 @@ import java.util.List;
 @RequestMapping(value = "/api/v1/user/")
 public class UserRestControllerV1 {
     private final UserService userService;
+    private final DrugService drugService;
 
     @Autowired
-    public UserRestControllerV1(UserService userService) {
+    public UserRestControllerV1(UserService userService, DrugService drugService) {
         this.userService = userService;
+        this.drugService = drugService;
     }
 
     /**
@@ -79,6 +78,12 @@ public class UserRestControllerV1 {
         }
 
         return new ResponseEntity<>(user.getDiagnosisList(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete/{code}")
+    public  ResponseEntity<String> deleteFromMedKit(@PathVariable(name = "code") String barcode){
+
+        return ResponseEntity.ok("Drug with barcode" + barcode + " deleted successfully");
     }
 }
 

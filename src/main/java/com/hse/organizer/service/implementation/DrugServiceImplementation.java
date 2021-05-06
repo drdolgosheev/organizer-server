@@ -181,4 +181,44 @@ public class DrugServiceImplementation implements DrugService {
         log.info("IN DRUG SERVICE: " + drug.toString() + "\n WAS SAVED SUCCESSFULLY");
         return result;
     }
+
+    /**
+     * Recount number of pills left
+     * @param barcode drug barcode
+     * @return number of pills left
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public Integer recountNumberOfPills(String barcode) {
+        Drug drug = drugRepository.findByBarcode(barcode);
+
+        if(drug == null)
+            return null;
+
+        List<DateDrugs> dateDrugs = getDrugTakeTime(barcode);
+
+        int curNumOfPills = drug.getNumOfPills();
+
+        Date curDate = new Date();
+
+        for (int i = 0; i < dateDrugs.size(); i++) {
+            if(drug.getUpdated().getDay() == curDate.getDay()) {
+                return curNumOfPills;
+            }else {
+                Date takeDate = dateDrugs.get(i).getDate();
+                if (curDate.after(takeDate)) {
+                    curNumOfPills--;
+                }
+            }
+        }
+
+        drug.setNumOfPills(curNumOfPills);
+        drug.setUpdated(curDate);
+
+        drugRepository.save(drug);
+
+        return curNumOfPills;
+    }
+
+
 }

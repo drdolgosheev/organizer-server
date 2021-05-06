@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 
-
 @Service
 @Slf4j
 public class RoleServiceImplementation implements RoleService {
