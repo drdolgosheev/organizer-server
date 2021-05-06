@@ -85,7 +85,7 @@ public class UserRestControllerV1 {
      * @param dto barcode, username
      * @return Status
      */
-    @DeleteMapping("deleteDrugFromMedKit")
+    @PostMapping("deleteDrugFromMedKit")
     public  ResponseEntity<BooleanDto> deleteFromMedKit(@RequestBody BarcodeDto dto){
         String username = dto.getUsername();
         String barcode = dto.getBarcode();
