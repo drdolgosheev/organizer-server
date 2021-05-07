@@ -153,7 +153,10 @@ public class DrugServiceImplementation implements DrugService {
             Date locDate = new Date();
             DateDrugs dateDrugs = new DateDrugs();
             int step = hoursInADay/drug.getNumOfPillsPerDay();
+            locDate.setHours(0);
             locDate.setHours(8+step*(i+1));
+            locDate.setMinutes(0);
+            locDate.setSeconds(0);
             dateDrugs.setDate(locDate);
             result.add(dateDrugs);
             log.info("Number: " + i + " Time: " + df2.format(dateDrugs.getDate()));
