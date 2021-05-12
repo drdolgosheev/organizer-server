@@ -30,4 +30,8 @@ public interface UserService {
     List<Diagnosis> getUserDiagnosis(Long userId);
 
     Boolean deleteFromMedKit(String barcode, String username);
+
+    Boolean changePassword(String username, String password);
+
+    Boolean assertPasswords(String password, String username);
 }

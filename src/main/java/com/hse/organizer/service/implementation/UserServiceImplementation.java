@@ -47,6 +47,7 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Register user
+     *
      * @param user User info
      * @return user if registered successfully
      */
@@ -71,12 +72,11 @@ public class UserServiceImplementation implements UserService {
 
         boolean isPasswordValid = true;
         boolean isEmailValid = EmailValidator.isValidEmailAddress(user.getEmail());
-        if(isEmailValid && isPasswordValid) {
+        if (isEmailValid && isPasswordValid) {
             User regUser = userRepository.save(user);
             log.info("IN register user was registered successfully: {}", regUser.toString());
             return regUser;
-        }
-        else {
+        } else {
             log.info("IN register user has incorrect log or pass");
             return null;
         }
@@ -84,6 +84,7 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Get all registered users
+     *
      * @return List all of users in db
      */
     @Override
@@ -97,6 +98,7 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Get user by id
+     *
      * @param id user id
      * @return user
      */
@@ -114,6 +116,7 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Get user by username
+     *
      * @param username user username
      * @return user
      */
@@ -128,6 +131,7 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Delete user from db
+     *
      * @param id user ID
      */
     @Override
@@ -138,6 +142,7 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Return user med kit
+     *
      * @param userId user ID
      * @return List of drugs connected with user
      */
@@ -154,6 +159,7 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Gets user Diagnosis
+     *
      * @param userId user ID
      * @return List og user diagnosis
      */
@@ -170,7 +176,8 @@ public class UserServiceImplementation implements UserService {
 
     /**
      * Delete drug from user's med kit
-     * @param barcode drug barcode
+     *
+     * @param barcode  drug barcode
      * @param username username
      * @return false if, do not delete, true if deleted successfully
      */
@@ -179,7 +186,7 @@ public class UserServiceImplementation implements UserService {
         Drug drug = drugRepository.findByBarcode(barcode);
         User user = userRepository.findByUsername(username);
 
-        if(drug == null || user == null)
+        if (drug == null || user == null)
             return false;
 
         List<Drug> curDrugList = user.getMedKit();
@@ -187,14 +194,14 @@ public class UserServiceImplementation implements UserService {
 
         for (int i = 0; i < curDrugList.size(); i++) {
             Drug locDrug = curDrugList.get(i);
-            if(locDrug.getBarcode().equals(barcode)){
+            if (locDrug.getBarcode().equals(barcode)) {
                 curDrugList.remove(locDrug);
             }
         }
 
         for (int i = 0; i < curUserList.size(); i++) {
             User locUser = curUserList.get(i);
-            if(locUser.getUsername().equals(username)){
+            if (locUser.getUsername().equals(username)) {
                 curUserList.remove(locUser);
             }
         }
@@ -206,5 +213,47 @@ public class UserServiceImplementation implements UserService {
         userRepository.save(user);
 
         return true;
+    }
+
+    /**
+     * Method to change user's password
+     * @param username username
+     * @param password user password
+     * @return true if successful, false if not
+     */
+    @Override
+    public Boolean changePassword(String username, String password) {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            log.error("IN changePassword: User not found");
+            return false;
+        }
+
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        log.info("IN changePassword: password changed");
+        return true;
+    }
+
+    /**
+     * Assert user's password
+     * @param password user's password
+     * @return true if equal, false if not
+     */
+    @Override
+    public Boolean assertPasswords(String password, String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            log.info("IN assertPasswords: user not found");
+            return false;
+        }
+
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            log.info("IN assertPasswords: passwords matches");
+            return true;
+        }
+
+        return false;
     }
 }

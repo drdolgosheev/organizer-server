@@ -36,10 +36,10 @@ public class UserRestControllerV1 {
      * @return HTTP response: body UserDto
      */
     @GetMapping(value = "get/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Long id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Long id) {
         User user = userService.findById(id);
 
-        if(user == null){
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
@@ -52,11 +52,11 @@ public class UserRestControllerV1 {
      * @param username user username
      * @return List of Drug
      */
-    @GetMapping(value="get/medKit/{username}")
-    public ResponseEntity<List<DrugForShare>> getUserMedKitById(@PathVariable(name = "username") String username){
+    @GetMapping(value = "get/medKit/{username}")
+    public ResponseEntity<List<DrugForShare>> getUserMedKitById(@PathVariable(name = "username") String username) {
         User user = userService.findByUsername(username);
 
-        if(user == null){
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
@@ -69,11 +69,11 @@ public class UserRestControllerV1 {
      * @param username user username
      * @return List of Diagnosis
      */
-    @GetMapping(value="get/diagnosis/{username}")
-    public ResponseEntity<List<Diagnosis>> getUserDiagnosisById(@PathVariable(name = "username") String username){
+    @GetMapping(value = "get/diagnosis/{username}")
+    public ResponseEntity<List<Diagnosis>> getUserDiagnosisById(@PathVariable(name = "username") String username) {
         User user = userService.findByUsername(username);
 
-        if(user == null){
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
@@ -82,11 +82,12 @@ public class UserRestControllerV1 {
 
     /**
      * Method delete drug from user's med kit
+     *
      * @param dto barcode, username
      * @return Status
      */
     @PostMapping("deleteDrugFromMedKit")
-    public  ResponseEntity<BooleanDto> deleteFromMedKit(@RequestBody BarcodeDto dto){
+    public ResponseEntity<BooleanDto> deleteFromMedKit(@RequestBody BarcodeDto dto) {
         String username = dto.getUsername();
         String barcode = dto.getBarcode();
         Boolean result = userService.deleteFromMedKit(barcode, username);
@@ -94,10 +95,56 @@ public class UserRestControllerV1 {
         reqDto.setFlag(result);
         if (result) {
             return ResponseEntity.ok(reqDto);
-        }
-        else {
+        } else {
             return ResponseEntity.ok(reqDto);
         }
+    }
+
+    /**
+     * Change user's password
+     *
+     * @param dto decoded password and username
+     * @return boolean value true, if successful, false if not
+     */
+    @PostMapping("changePassword")
+    public ResponseEntity<BooleanDto> deleteFromMedKit(@RequestBody ChangePasswordDto dto) {
+        Boolean result = userService.changePassword(dto.getUsername(), dto.getPassword());
+        BooleanDto resultDto = new BooleanDto();
+        resultDto.setFlag(result);
+        return ResponseEntity.ok(resultDto);
+    }
+
+    /**
+     * Checks if passwords are equal
+     *
+     * @param passwordDto password
+     * @return boolean value true, if successful, false if not
+     */
+    @GetMapping("checkPasswordEquals")
+    public ResponseEntity<BooleanDto> checkPasswordEquals(@RequestBody ChangePasswordDto passwordDto) {
+        BooleanDto dto = new BooleanDto();
+        Boolean result = userService.assertPasswords(passwordDto.getPassword(), passwordDto.getUsername());
+        dto.setFlag(result);
+        return ResponseEntity.ok(dto);
+    }
+
+    /**
+     * Get user by username
+     *
+     * @param username username
+     * @return HTTP response: body UserDto
+     */
+    @GetMapping(value = "getUser/{username}")
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable(name = "username") String username) {
+        User user = userService.findByUsername(username);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        UserDto result = UserDto.fromUser(user);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
 
