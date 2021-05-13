@@ -120,7 +120,7 @@ public class UserRestControllerV1 {
      * @param passwordDto password
      * @return boolean value true, if successful, false if not
      */
-    @GetMapping("checkPasswordEquals")
+    @PostMapping("checkPasswordEquals")
     public ResponseEntity<BooleanDto> checkPasswordEquals(@RequestBody ChangePasswordDto passwordDto) {
         BooleanDto dto = new BooleanDto();
         Boolean result = userService.assertPasswords(passwordDto.getPassword(), passwordDto.getUsername());
